@@ -3,11 +3,11 @@ import argparse
 import asyncio
 import logging
 import os
+import subprocess
 import tempfile
 import wave
 from typing import Optional
 
-import faster_whisper
 from wyoming.asr import Transcribe, Transcript
 from wyoming.audio import AudioChunk, AudioStop
 from wyoming.event import Event
@@ -24,7 +24,6 @@ class FasterWhisperEventHandler(AsyncEventHandler):
         self,
         wyoming_info: Info,
         cli_args: argparse.Namespace,
-        model: faster_whisper.WhisperModel,
         model_lock: asyncio.Lock,
         *args,
         initial_prompt: Optional[str] = None,
@@ -34,7 +33,6 @@ class FasterWhisperEventHandler(AsyncEventHandler):
 
         self.cli_args = cli_args
         self.wyoming_info_event = wyoming_info.event()
-        self.model = model
         self.model_lock = model_lock
         self.initial_prompt = initial_prompt
         self._language = self.cli_args.language
@@ -66,12 +64,28 @@ class FasterWhisperEventHandler(AsyncEventHandler):
             self._wav_file = None
 
             async with self.model_lock:
-                segments, _info = self.model.transcribe(
-                    self._wav_path,
-                    beam_size=self.cli_args.beam_size,
-                    language=self._language,
-                    initial_prompt=self.initial_prompt,
+                # segments, _info = self.model.transcribe(
+                #     self._wav_path,
+                #     beam_size=self.cli_args.beam_size,
+                #     language=self._language,
+                #     initial_prompt=self.initial_prompt,
+                # )
+                subprocess.run(
+                    [
+                        "whisper",
+                        "-bs",
+                        self.cli_args.beam_size,
+                        "-l",
+                        self._language,
+                        "--prompt",
+                        self.initial_prompt,
+                        "--output-txt",
+                        "-f",
+                        self._wav_path,
+                    ]
                 )
+                with open(f"{self._wav_path}.txt", "r", encoding="utf-8") as f:
+                    segments = f.readlines()
 
             text = " ".join(segment.text for segment in segments)
             _LOGGER.info(text)

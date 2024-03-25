@@ -121,12 +121,6 @@ async def main() -> None:
 
     # Load model
     _LOGGER.debug("Loading %s", args.model)
-    whisper_model = faster_whisper.WhisperModel(
-        args.model,
-        download_root=args.download_dir,
-        device=args.device,
-        compute_type=args.compute_type,
-    )
 
     server = AsyncServer.from_uri(args.uri)
     _LOGGER.info("Ready")
@@ -136,7 +130,6 @@ async def main() -> None:
             FasterWhisperEventHandler,
             wyoming_info,
             args,
-            whisper_model,
             model_lock,
             initial_prompt=args.initial_prompt,
         )
