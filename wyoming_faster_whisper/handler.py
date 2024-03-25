@@ -74,7 +74,7 @@ class FasterWhisperEventHandler(AsyncEventHandler):
                     [
                         "whisper",
                         "-bs",
-                        self.cli_args.beam_size,
+                        str(self.cli_args.beam_size),
                         "-l",
                         self._language,
                         "--prompt",
