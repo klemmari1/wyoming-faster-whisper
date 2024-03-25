@@ -79,8 +79,6 @@ class FasterWhisperEventHandler(AsyncEventHandler):
                         str(self.cli_args.beam_size) or "5",
                         "-l",
                         self._language or "en",
-                        "--prompt" if self.initial_prompt else "",
-                        self.initial_prompt if self.initial_prompt else "",
                         "--output-txt",
                         "--model",
                         self.model_name,
@@ -91,7 +89,7 @@ class FasterWhisperEventHandler(AsyncEventHandler):
                 with open(f"{self._wav_path}.txt", "r", encoding="utf-8") as f:
                     segments = f.readlines()
 
-            text = " ".join(segment for segment in segments)
+            text = " ".join(segment.text for segment in segments)
             _LOGGER.info(text)
 
             await self.write_event(Transcript(text=text).event())

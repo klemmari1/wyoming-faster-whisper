@@ -119,9 +119,6 @@ async def main() -> None:
         ],
     )
 
-    # Load model
-    _LOGGER.debug("Loading %s", args.model)
-
     server = AsyncServer.from_uri(args.uri)
     _LOGGER.info("Ready")
     model_lock = asyncio.Lock()
