@@ -24,6 +24,7 @@ class FasterWhisperEventHandler(AsyncEventHandler):
         self,
         wyoming_info: Info,
         cli_args: argparse.Namespace,
+        model_name: str,
         model_lock: asyncio.Lock,
         *args,
         initial_prompt: Optional[str] = None,
@@ -33,6 +34,7 @@ class FasterWhisperEventHandler(AsyncEventHandler):
 
         self.cli_args = cli_args
         self.wyoming_info_event = wyoming_info.event()
+        self.model_name = model_name
         self.model_lock = model_lock
         self.initial_prompt = initial_prompt
         self._language = self.cli_args.language
@@ -80,6 +82,8 @@ class FasterWhisperEventHandler(AsyncEventHandler):
                         "--prompt" if self.initial_prompt else "",
                         self.initial_prompt if self.initial_prompt else "",
                         "--output-txt",
+                        "--model",
+                        self.model_name,
                         "-f",
                         self._wav_path,
                     ]

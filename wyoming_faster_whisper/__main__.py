@@ -130,6 +130,7 @@ async def main() -> None:
             FasterWhisperEventHandler,
             wyoming_info,
             args,
+            model_name,
             model_lock,
             initial_prompt=args.initial_prompt,
         )
