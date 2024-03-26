@@ -11,6 +11,8 @@ LABEL maintainer="thespad"
 
 ENV HOME=/config
 
+COPY . .
+
 RUN \
   apt-get update && \
   apt-get install -y --no-install-recommends \
