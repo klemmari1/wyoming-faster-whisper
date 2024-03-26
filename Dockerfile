@@ -13,23 +13,29 @@ ENV HOME=/config
 
 COPY . .
 
-RUN \
-  apt-get update && \
-  apt-get install -y --no-install-recommends \
-    build-essential \
-    software-properties-common && \
-  add-apt-repository ppa:deadsnakes/ppa && \
-  apt-get install -y --no-install-recommends python3.10 && \
-  rm /usr/bin/python3 && ln -s /usr/bin/python3.10 /usr/bin/python3 && \
-  python3 -m venv /lsiopy && \
-  pip3 install -U --no-cache-dir \
+RUN  apt-get update
+
+RUN apt-get install -y --no-install-recommends \
+build-essential \
+software-properties-common
+
+RUN add-apt-repository ppa:deadsnakes/ppa
+
+RUN apt-get install -y --no-install-recommends python3.10
+
+RUN ln -s /usr/bin/python3.10 /usr/bin/python3
+
+RUN python3 -m venv /lsiopy
+
+RUN pip3 install -U --no-cache-dir \
     pip \
-    wheel && \
-  pip3 install -U --no-cache-dir \
-    -e . && \
-  apt-get purge -y --auto-remove \
+    wheel
+
+RUN pip3 install -U --no-cache-dir -e
+
+RUN apt-get purge -y --auto-remove \
     build-essential \
-  rm -rf \
+    rm -rf \
     /var/lib/apt/lists/* \
     /tmp/*
 
