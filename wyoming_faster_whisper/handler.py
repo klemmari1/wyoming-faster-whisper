@@ -72,20 +72,21 @@ class FasterWhisperEventHandler(AsyncEventHandler):
                 #     language=self._language,
                 #     initial_prompt=self.initial_prompt,
                 # )
-                subprocess.run(
-                    [
-                        "whisper",
-                        "-bs",
-                        str(self.cli_args.beam_size) or "5",
-                        "-l",
-                        self._language or "en",
-                        "--output-txt",
-                        "--model",
-                        self.model_name,
-                        "-f",
-                        self._wav_path,
-                    ]
-                )
+                args = [
+                    "whisper",
+                    "-bs",
+                    str(self.cli_args.beam_size) or "5",
+                    "-l",
+                    self._language or "en",
+                    "--output-txt",
+                    "--model",
+                    self.model_name,
+                    "-f",
+                    self._wav_path,
+                ]
+                if self.cli_args.beam_size:
+                    args += ["-bs", str(self.cli_args.beam_size)]
+                subprocess.run(args)
                 with open(f"{self._wav_path}.txt", "r", encoding="utf-8") as f:
                     segments = f.readlines()
 
