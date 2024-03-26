@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM dustynv/jetson-inference:r36.2.0
+FROM dustynv/jetson-inference:r32.7.1
 
 # set version label
 ARG BUILD_DATE
