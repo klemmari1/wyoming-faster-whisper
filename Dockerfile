@@ -15,12 +15,12 @@ COPY . .
 
 RUN \
   apt-get update && \
-  apt-get install -y --no-install-recommends \
+  apt-get install \
     build-essential \
-    python3-dev \
-    python3-pip \
-    python3-venv && \
-  python3 -m venv /lsiopy && \
+    software-properties-common && \
+  add-apt-repository ppa:deadsnakes/ppa && \
+  apt install python3.10 && \
+  python -m venv /lsiopy && \
   pip install -U --no-cache-dir \
     pip \
     wheel && \
@@ -28,7 +28,6 @@ RUN \
     -e . && \
   apt-get purge -y --auto-remove \
     build-essential \
-    python3-dev && \
   rm -rf \
     /var/lib/apt/lists/* \
     /tmp/*
