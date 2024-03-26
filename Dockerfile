@@ -20,7 +20,7 @@ RUN \
     software-properties-common && \
   add-apt-repository ppa:deadsnakes/ppa && \
   apt-get install -y --no-install-recommends python3.10 && \
-  RUN rm /usr/bin/python3 && ln -s /usr/bin/python3.10 /usr/bin/python3 && \
+  rm /usr/bin/python3 && ln -s /usr/bin/python3.10 /usr/bin/python3 && \
   python3 -m venv /lsiopy && \
   pip3 install -U --no-cache-dir \
     pip \
