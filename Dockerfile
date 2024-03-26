@@ -33,6 +33,7 @@ RUN \
     /tmp/*
 
 COPY root/ /
+COPY models /
 COPY whisper /usr/local/bin/
 
 VOLUME /config
