@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
+FROM dustynv/jetson-inference:r36.2.0
 
 # set version label
 ARG BUILD_DATE
